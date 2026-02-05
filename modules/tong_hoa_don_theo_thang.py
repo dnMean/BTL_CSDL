@@ -34,26 +34,74 @@ def show_danh_sach_hoa_don():
         df[col] = df[col].astype(float)
 
     # =========================
+    # TÁCH THÁNG VÀ NĂM TỪ CỘT "Tháng / Năm"
+    # =========================
+    def parse_thang_nam(value):
+        """Parse tháng và năm từ nhiều format khác nhau"""
+        s = str(value).strip()
+        
+        # Thử format "MM/YYYY" hoặc "M/YYYY"
+        if "/" in s:
+            parts = s.split("/")
+            if len(parts) == 2:
+                return int(parts[0].strip()), int(parts[1].strip())
+        
+        # Thử format "YYYY-MM"
+        if "-" in s:
+            parts = s.split("-")
+            if len(parts) == 2:
+                # Kiểm tra xem năm ở đầu hay cuối
+                if len(parts[0]) == 4:  # YYYY-MM
+                    return int(parts[1].strip()), int(parts[0].strip())
+                else:  # MM-YYYY
+                    return int(parts[0].strip()), int(parts[1].strip())
+        
+        # Thử parse datetime
+        try:
+            dt = pd.to_datetime(value)
+            return dt.month, dt.year
+        except:
+            pass
+        
+        return None, None
+
+    df[["Tháng", "Năm"]] = df["Tháng / Năm"].apply(
+        lambda x: pd.Series(parse_thang_nam(x))
+    )
+
+    # Debug: xem format thực tế
+    # st.write("Giá trị mẫu 'Tháng / Năm':", df["Tháng / Năm"].head().tolist())
+    # st.write("Tháng parsed:", df["Tháng"].head().tolist())
+    # st.write("Năm parsed:", df["Năm"].head().tolist())
+
+    # =========================
     # FILTER
     # =========================
-    col1, col2, col3 = st.columns(3)
+    col1, col2, col3, col4 = st.columns(4)
 
     with col1:
-        thang_list = ["Tất cả"] + sorted(df["Tháng / Năm"].unique().tolist())
-        filter_thang = st.selectbox("📅 Lọc theo tháng", thang_list)
+        # Lọc bỏ None values
+        nam_values = df["Năm"].dropna().unique().tolist()
+        nam_list = ["Tất cả"] + sorted([int(n) for n in nam_values], reverse=True)
+        filter_nam = st.selectbox("📅 Lọc theo năm", nam_list)
 
     with col2:
-        search_sv = st.text_input("🔍 Tìm theo tên sinh viên")
+        thang_list = ["Tất cả"] + list(range(1, 13))
+        filter_thang = st.selectbox("📅 Lọc theo tháng", thang_list)
 
     with col3:
+        search_sv = st.text_input("🔍 Tìm theo tên sinh viên")
+
+    with col4:
         search_msv = st.text_input("🔍 Tìm theo MSV")
 
     filtered_df = df.copy()
 
+    if filter_nam != "Tất cả":
+        filtered_df = filtered_df[filtered_df["Năm"] == filter_nam]
+
     if filter_thang != "Tất cả":
-        filtered_df = filtered_df[
-            filtered_df["Tháng / Năm"] == filter_thang
-        ]
+        filtered_df = filtered_df[filtered_df["Tháng"] == filter_thang]
 
     if search_sv:
         filtered_df = filtered_df[

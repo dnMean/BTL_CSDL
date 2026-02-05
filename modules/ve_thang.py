@@ -84,6 +84,13 @@ def show_ve_thang():
             st.error("Chưa có sinh viên trong hệ thống")
             return
 
+        # Lấy danh sách xe
+        data_xe = execute_query("SELECT BienSo, MauXe, HieuXe FROM XE")
+
+        if not data_xe:
+            st.error("Chưa có xe nào trong hệ thống. Vui lòng thêm xe trước.")
+            return
+
         with st.form("form_dang_ky_ve_thang", clear_on_submit=True):
             sv_map = {
                 f"{sv['MSV']} - {sv['HoTen']}": sv['MSV']
@@ -91,19 +98,28 @@ def show_ve_thang():
             }
 
             selected_sv = st.selectbox("Sinh viên *", sv_map.keys())
-            bien_so = st.text_input("Biển số xe *", placeholder="59X1-12345")
+
+            # Selectbox biển số xe
+            xe_map = {
+                f"{xe['BienSo']} - {xe['HieuXe']} ({xe['MauXe']})": xe['BienSo']
+                for xe in data_xe
+            }
+            selected_xe = st.selectbox("Biển số xe *", xe_map.keys())
 
             now = datetime.now()
-            thang = st.selectbox(
-                "Tháng *",
-                list(range(1, 13)),
-                index=now.month - 1
-            )
-            nam = st.selectbox(
-                "Năm *",
-                [now.year - 1, now.year, now.year + 1],
-                index=1
-            )
+            col1, col2 = st.columns(2)
+            with col1:
+                thang = st.selectbox(
+                    "Tháng *",
+                    list(range(1, 13)),
+                    index=now.month - 1
+                )
+            with col2:
+                nam = st.selectbox(
+                    "Năm *",
+                    [now.year - 1, now.year, now.year + 1],
+                    index=1
+                )
 
             st.info("""
             ℹ️ **Quy định**
@@ -119,11 +135,8 @@ def show_ve_thang():
             )
 
             if submitted:
-                if not bien_so:
-                    st.error("❌ Vui lòng nhập biển số xe")
-                    return
-
                 msv = sv_map[selected_sv]
+                bien_so = xe_map[selected_xe]
 
                 success, message, result = call_procedure(
                     "sp_dang_ky_ve_thang",
