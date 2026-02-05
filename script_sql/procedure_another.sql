@@ -1,5 +1,8 @@
 use BTL_CSDL;
 
+
+DROP PROCEDURE IF EXISTS sp_ThemSinhVien;
+
 DELIMITER $$
 
 CREATE PROCEDURE sp_ThemSinhVien(
@@ -26,6 +29,8 @@ DELIMITER ;
 
 
 -- Sửa Sinh Viên
+DROP PROCEDURE IF EXISTS sp_SuaSinhVien;
+
 DELIMITER $$
 
 CREATE PROCEDURE sp_SuaSinhVien(
@@ -59,6 +64,8 @@ END$$
 DELIMITER ;
 
 -- Xoá sinh viên
+DROP PROCEDURE IF EXISTS sp_XoaSinhVien;
+
 DELIMITER $$
 
 CREATE PROCEDURE sp_XoaSinhVien(
@@ -81,6 +88,8 @@ END$$
 DELIMITER ;
 
 -- DANH SACH SV
+DROP PROCEDURE IF EXISTS sp_ds_SINHVIEN;
+
 DELIMITER $$
 
 CREATE PROCEDURE sp_ds_SINHVIEN()
@@ -92,6 +101,8 @@ DELIMITER ;
 
 
 -- THEM DICH_VU
+DROP PROCEDURE IF EXISTS sp_them_dich_vu;
+
 DROP PROCEDURE IF EXISTS sp_them_dich_vu;
 DELIMITER $$
 
@@ -141,6 +152,7 @@ DELIMITER ;
 
 
 -- SUA DICH VU
+
 DROP PROCEDURE IF EXISTS sp_sua_dich_vu;
 DELIMITER $$
 
@@ -248,6 +260,8 @@ DELIMITER ;
 
 
 -- Thêm Phong
+DROP PROCEDURE IF EXISTS sp_them_phong;
+
 DELIMITER $$
 
 CREATE PROCEDURE sp_them_phong(
@@ -281,6 +295,7 @@ END$$
 DELIMITER ;
 
 -- Sửa PHONG
+DROP PROCEDURE IF EXISTS sp_sua_phong;
 
 DELIMITER $$
 
@@ -305,6 +320,8 @@ DELIMITER ;
 
 
 -- Xoá PHONG
+DROP PROCEDURE IF EXISTS sp_xoa_phong;
+
 DELIMITER $$
 
 CREATE PROCEDURE sp_xoa_phong(
@@ -334,6 +351,8 @@ DELIMITER ;
 
 
 -- DANH SACH PHONG
+DROP PROCEDURE IF EXISTS sp_ds_phong;
+
 DELIMITER $$
 
 CREATE PROCEDURE sp_ds_phong()
@@ -353,6 +372,8 @@ END$$
 DELIMITER ;
 
 -- THEM KTX
+DROP PROCEDURE IF EXISTS sp_them_ktx;
+
 DELIMITER $$
 
 CREATE PROCEDURE sp_them_ktx(
@@ -381,6 +402,8 @@ END$$
 DELIMITER ;
 
 -- SUA KTX
+DROP PROCEDURE IF EXISTS sp_sua_ktx;
+
 DELIMITER $$
 
 CREATE PROCEDURE sp_sua_ktx(
@@ -403,6 +426,8 @@ END$$
 DELIMITER ;
 
 -- XOA KTX
+
+DROP PROCEDURE IF EXISTS sp_xoa_ktx;
 
 DELIMITER $$
 
@@ -428,6 +453,8 @@ END$$
 DELIMITER ;
 
 -- LAY DANH SACH KTX
+DROP PROCEDURE IF EXISTS sp_ds_ktx;
+
 DELIMITER $$
 
 CREATE PROCEDURE sp_ds_ktx()
@@ -438,6 +465,8 @@ END$$
 DELIMITER ;
 
 -- THÊM LOAI_PHONG
+DROP PROCEDURE IF EXISTS sp_them_loai_phong;
+
 DELIMITER $$
 
 CREATE PROCEDURE sp_them_loai_phong(
@@ -471,6 +500,8 @@ DELIMITER ;
 
 -- SỬA LOAI_PHONG
 
+DROP PROCEDURE IF EXISTS sp_sua_loai_phong;
+
 DELIMITER $$
 
 CREATE PROCEDURE sp_sua_loai_phong(
@@ -493,6 +524,8 @@ END$$
 DELIMITER ;
 
 -- XOA LOAI_PHONG
+DROP PROCEDURE IF EXISTS sp_xoa_loai_phong;
+
 DELIMITER $$
 
 CREATE PROCEDURE sp_xoa_loai_phong(
@@ -523,6 +556,8 @@ END$$
 DELIMITER ;
 
 -- DANH SACH LOAI_PHONG
+DROP PROCEDURE IF EXISTS sp_ds_loai_phong;
+
 DELIMITER $$
 
 CREATE PROCEDURE sp_ds_loai_phong()
@@ -535,6 +570,8 @@ DELIMITER ;
 
 
 -- Thêm XE
+DROP PROCEDURE IF EXISTS sp_them_xe;
+
 DELIMITER $$
 
 CREATE PROCEDURE sp_them_xe(
@@ -556,6 +593,8 @@ END$$
 DELIMITER ;
 
 -- SỬA XE
+DROP PROCEDURE IF EXISTS sp_sua_xe;
+
 DELIMITER $$
 
 CREATE PROCEDURE sp_sua_xe(
@@ -580,6 +619,8 @@ DELIMITER ;
 
 
 -- DS XE
+DROP PROCEDURE IF EXISTS sp_xe_xem_all;
+
 DELIMITER $$
 
 CREATE PROCEDURE sp_xe_xem_all()
@@ -590,6 +631,8 @@ END$$
 DELIMITER ;
 
 -- Xoa Xe
+DROP PROCEDURE IF EXISTS sp_xe_xoa;
+
 DELIMITER $$
 
 CREATE PROCEDURE sp_xe_xoa(
@@ -609,7 +652,7 @@ DELIMITER ;
 
 
 -- THEM HOP DONG
-DROP PROCEDURE IF EXISTS sp_hd_them;
+-- DROP PROCEDURE IF EXISTS sp_hd_them;
 -- DELIMITER $$
 
 -- CREATE PROCEDURE sp_hd_them(
@@ -938,6 +981,8 @@ END$$
 DELIMITER ;
 
 -- XOA HOP DONG
+DROP PROCEDURE IF EXISTS sp_hd_xoa;
+
 DELIMITER $$
 
 CREATE PROCEDURE sp_hd_xoa(
@@ -957,6 +1002,8 @@ DELIMITER ;
 
 
 -- HOA DON DICH VU
+DROP PROCEDURE IF EXISTS get_hoa_don_dich_vu;
+
 DELIMITER $$
 
 CREATE PROCEDURE get_hoa_don_dich_vu()
