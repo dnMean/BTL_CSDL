@@ -15,6 +15,7 @@ from modules.hoa_don_tien_phong import show_hoa_don_tien_phong
 from modules.dich_vu import show_dich_vu
 from modules.su_dung_dich_vu import show_su_dung_dich_vu
 from modules.tong_hoa_don_theo_thang import show_tong_hoa_don_theo_thang
+from modules.thong_ke_doanh_thu_dich_vu import show_thong_ke_doanh_thu
 # Cấu hình trang
 st.set_page_config(
     page_title="Quản lý Ký Túc Xá",
@@ -70,7 +71,8 @@ with st.sidebar:
         "Quản lý Hoá đơn tiền phòng": "hop_dong_tien_phong",
         "Quản lý Dịch vụ" : "dich_vu",
         "Quản lý Sử dụng dịch vụ": "su_dung_dich_vu",
-        "Tổng hoá đơn theo tháng": "tong_hoa_don_theo_thang"
+        "Tổng hoá đơn theo tháng": "tong_hoa_don_theo_thang",
+        "Thống kê doanh thu dịch vụ": "thong_ke_doanh_thu_dich_vi"
     }
     
     # Sử dụng radio buttons cho menu
@@ -150,6 +152,9 @@ elif menu_options[selected_menu] == "su_dung_dich_vu":
 
 elif menu_options[selected_menu] == "tong_hoa_don_theo_thang":
     show_tong_hoa_don_theo_thang()
+
+elif menu_options[selected_menu] == "thong_ke_doanh_thu_dich_vi":
+    show_thong_ke_doanh_thu()
 
 # Footer
 st.divider()
