@@ -103,7 +103,6 @@ DELIMITER ;
 -- THEM DICH_VU
 DROP PROCEDURE IF EXISTS sp_them_dich_vu;
 
-DROP PROCEDURE IF EXISTS sp_them_dich_vu;
 DELIMITER $$
 
 CREATE PROCEDURE sp_them_dich_vu(
@@ -1575,5 +1574,66 @@ BEGIN
         AND DATE_FORMAT(vl.ThoiGianRa, '%m%Y') = p_ThangNam
 
     ORDER BY LoaiHoaDon, MoTa;
+END$$
+DELIMITER ;
+
+
+-- THống kê doanh thu dịch vụ
+DROP PROCEDURE IF EXISTS ThongKeDoanhThuDichVu;
+
+DELIMITER $$
+
+CREATE PROCEDURE ThongKeDoanhThuDichVu(
+    IN p_Thang INT,
+    IN p_Nam INT
+)
+BEGIN
+    -- Doanh thu dịch vụ thông thường
+    SELECT 
+        dv.TenDV AS TenDichVu,
+        CONCAT(p_Thang, '/', p_Nam) AS ThangNam,
+        dv.DonGia,
+        dv.DonVi,
+        COALESCE(SUM(sd.SoLuong), 0) AS TongSoLuong,
+        COALESCE(SUM(sd.SoLuong * dv.DonGia), 0) AS TongDoanhThu
+    FROM DICH_VU dv
+    LEFT JOIN SU_DUNG_DICH_VU sd ON dv.MADV = sd.MADV
+    LEFT JOIN HOA_DON_DICH_VU hd ON sd.MaHoaDon = hd.MaHoaDon
+        AND MONTH(hd.Thang_Nam) = p_Thang
+        AND YEAR(hd.Thang_Nam) = p_Nam
+        AND hd.TrangThaiTT = TRUE
+    GROUP BY dv.MADV, dv.TenDV, dv.DonGia, dv.DonVi
+
+    UNION ALL
+
+    -- Doanh thu vé xe tháng
+    SELECT 
+        'Vé xe tháng' AS TenDichVu,
+        CONCAT(p_Thang, '/', p_Nam) AS ThangNam,
+        AVG(vx.GiaVe) AS DonGia,
+        'Vé' AS DonVi,
+        COUNT(*) AS TongSoLuong,
+        SUM(vx.GiaVe) AS TongDoanhThu
+    FROM VE_XE vx
+    JOIN VE_THANG vt ON vx.MaVe = vt.MaVe
+    WHERE vt.Thang = p_Thang
+      AND vt.NAM = p_Nam
+
+    UNION ALL
+
+    -- Doanh thu vé xe lượt
+    SELECT 
+        'Vé xe lượt' AS TenDichVu,
+        CONCAT(p_Thang, '/', p_Nam) AS ThangNam,
+        AVG(vx.GiaVe) AS DonGia,
+        'Lượt' AS DonVi,
+        COUNT(*) AS TongSoLuong,
+        SUM(vx.GiaVe) AS TongDoanhThu
+    FROM VE_XE vx
+    JOIN VE_LUOT vl ON vx.MaVe = vl.MaVe
+    WHERE MONTH(vl.ThoiGianVao) = p_Thang
+      AND YEAR(vl.ThoiGianVao) = p_Nam
+
+    ORDER BY TongDoanhThu DESC;
 END$$
 DELIMITER ;
